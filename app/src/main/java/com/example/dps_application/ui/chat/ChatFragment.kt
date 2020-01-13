@@ -9,11 +9,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import com.example.dps_application.R
+import com.example.dps_application.di.Injectable
 import javax.inject.Inject
 
-class ChatFragment : Fragment() {
+class ChatFragment : Fragment(), Injectable {
 
 
     @Inject

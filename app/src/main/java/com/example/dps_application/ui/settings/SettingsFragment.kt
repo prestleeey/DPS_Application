@@ -9,12 +9,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import com.example.dps_application.R
-import com.example.dps_application.ui.map.MapViewModel
+import com.example.dps_application.di.Injectable
 import javax.inject.Inject
 
-class SettingsFragment : Fragment() {
+class SettingsFragment : Fragment(), Injectable {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
