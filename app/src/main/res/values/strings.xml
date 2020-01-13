@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">DPS_Application</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="map">Карта</string>
+    <string name="chat">Чат</string>
+    <string name="settings">Настройки</string>
+    <string name="authorization">Авторизация</string>
+</resources>
