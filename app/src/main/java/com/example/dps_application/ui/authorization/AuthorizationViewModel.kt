@@ -14,14 +14,7 @@ class AuthorizationViewModel
 
     fun getLogInEvent() = logInEvent
 
-    fun saveUserInfo(token : String) = authorizationUseCase.execute(AuthorizationObserver(), token)
-
-    override fun onCleared() {
-        authorizationUseCase.dispose()
-        super.onCleared()
-    }
-
-    private inner class AuthorizationObserver : DisposableSingleObserver<Unit>() {
+    fun saveUserInfo(token : String) = authorizationUseCase.execute(object :DisposableSingleObserver<Unit>() {
         override fun onSuccess(t: Unit) {
             logInEvent.call()
         }
@@ -30,6 +23,11 @@ class AuthorizationViewModel
             Log.d("1337", "error: $e")
         }
 
+    }, token)
+
+    override fun onCleared() {
+        authorizationUseCase.dispose()
+        super.onCleared()
     }
 
 }

@@ -14,10 +14,10 @@ class TokenRepositoryImpl
 ): TokenRepository {
 
     override fun loadTokenFromLocal() =  AccessToken(
-            sPref.getString(UserFields.TOKEN_TYPE.field, "") ?: "",
-            sPref.getInt(UserFields.TOKEN_EXPIRE.field, 0),
-            sPref.getString(UserFields.TOKEN_ACCESS.field, "") ?: "",
-            sPref.getString(UserFields.TOKEN_REFRESH.field, "") ?: ""
+            sPref.getString(UserFields.TOKEN_TYPE.name, "") ?: "",
+            sPref.getInt(UserFields.TOKEN_EXPIRE.name, 0),
+            sPref.getString(UserFields.TOKEN_ACCESS.name, "") ?: "",
+            sPref.getString(UserFields.TOKEN_REFRESH.name, "") ?: ""
         )
 
     override fun authorization(token : String) = userAPI.authorization(token)
@@ -26,10 +26,10 @@ class TokenRepositoryImpl
 
     override fun saveToken(token: AccessToken) {
         val ed = sPref.edit()
-        ed.putString(UserFields.TOKEN_TYPE.field, token.tokenType)
-        ed.putInt(UserFields.TOKEN_EXPIRE.field, token.expiresIn)
-        ed.putString(UserFields.TOKEN_ACCESS.field, token.accessToken)
-        ed.putString(UserFields.TOKEN_REFRESH.field, token.refreshToken)
+        ed.putString(UserFields.TOKEN_TYPE.name, token.tokenType)
+        ed.putInt(UserFields.TOKEN_EXPIRE.name, token.expiresIn)
+        ed.putString(UserFields.TOKEN_ACCESS.name, token.accessToken)
+        ed.putString(UserFields.TOKEN_REFRESH.name, token.refreshToken)
         ed.apply()
     }
 

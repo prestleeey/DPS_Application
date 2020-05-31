@@ -2,12 +2,13 @@ package com.example.dps_application.di
 
 import android.app.Application
 import android.content.Context.MODE_PRIVATE
-import com.example.dps_application.api.ServerAuthenticator
-import com.example.dps_application.api.UserAPI
-import com.example.dps_application.api.WrapperConverterFactory
+import androidx.room.Room
+import com.example.dps_application.api.*
+import com.example.dps_application.db.DPSDb
 import com.example.dps_application.domain.repository.TokenRepository
-import com.example.dps_application.util.ApiClient
-import com.example.dps_application.util.RefreshTokenClient
+import com.example.dps_application.util.*
+import com.facebook.stetho.okhttp3.StethoInterceptor
+import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import okhttp3.Interceptor
@@ -17,46 +18,57 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
+import java.util.concurrent.Executor
+import java.util.concurrent.Executors
 import javax.inject.Singleton
 
 @Module(includes = [ViewModelModule::class, ExecutorModule::class, RepositoryModule::class])
 class ApplicationModule {
 
-    private val URL = "http://192.168.1.5:88/api/"
-    private val NAME_SHAREDPREFERENCES = "DPS_SPREF"
+    @Provides
+    @Singleton
+    fun provideDPSDatabase(application: Application) =
+        Room.databaseBuilder(application, DPSDb::class.java, "dps.db")
+            .fallbackToDestructiveMigration()
+            .build()
+
+    @ApiClient
+    @Provides
+    @Singleton
+    fun provideUserAPIService(@ApiClient retrofit: Retrofit) = retrofit.create(UserAPI::class.java)
+
+    @Provides
+    @Singleton
+    fun provideMessageAPIService(@ApiClient retrofit: Retrofit) = retrofit.create(MessageAPI::class.java)
 
     @ApiClient
     @Provides
     @Singleton
     fun provideRetrofitForApi(client: OkHttpClient) = Retrofit.Builder()
-        .baseUrl(URL)
+        .baseUrl(Constants.URL)
         .client(client)
-        .addConverterFactory(WrapperConverterFactory(GsonConverterFactory.create()))
+        .addConverterFactory(WrapperConverterFactory(GsonConverterFactory.create(GsonBuilder().setExclusionStrategies(AnnotationExclusionStrategy()).create())))
         .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
         .build()
-        .create(UserAPI::class.java)
 
 
     @RefreshTokenClient
     @Provides
     @Singleton
-    fun provideRetrofitForRefreshToken() = Retrofit.Builder()
-        .baseUrl(URL)
-        .addConverterFactory(WrapperConverterFactory(GsonConverterFactory.create()))
+    fun provideUserAPIForRefreshToken() = Retrofit.Builder()
+        .baseUrl(Constants.URL)
+        .addConverterFactory(WrapperConverterFactory(GsonConverterFactory.create(GsonBuilder().setExclusionStrategies(AnnotationExclusionStrategy()).create())))
         .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+        .client(OkHttpClient.Builder().addNetworkInterceptor(StethoInterceptor()).build())
         .build()
         .create(UserAPI::class.java)
-
-    @Provides
-    @Singleton
-    fun provideSPref(application : Application) =
-        application.getSharedPreferences(NAME_SHAREDPREFERENCES, MODE_PRIVATE)
 
     @Provides
     @Singleton
     fun provideClient(tokenRepository: TokenRepository, serverAuthenticator: ServerAuthenticator) =
         OkHttpClient.Builder()
             .authenticator(serverAuthenticator)
+            .addNetworkInterceptor(StethoInterceptor())
             .addInterceptor(object : Interceptor {
                 @Throws(IOException::class)
                 override fun intercept(chain: Interceptor.Chain): Response {
@@ -80,5 +92,18 @@ class ApplicationModule {
                 }
             })
             .build()
+
+    @Provides
+    @Singleton
+    fun provideSPref(application: Application) =
+        application.getSharedPreferences(Constants.NAME_SHAREDPREFERENCES, MODE_PRIVATE)
+
+    @Provides
+    @NETWORK_IO
+    fun provideNetrworkIO(): Executor = Executors.newFixedThreadPool(5)
+
+    @Provides
+    @DISK_IO
+    fun provideDiskIO(): Executor = Executors.newSingleThreadExecutor()
 
 }

@@ -21,11 +21,29 @@ class UserRepositoryImpl
 
     override fun saveUserInfo(user: User) {
         val ed = sPref.edit()
-        ed.putString(UserFields.FIRSTNAME.field, user.firstName)
-        ed.putString(UserFields.LASTNAME.field, user.lastName)
-        ed.putString(UserFields.PHOTO.field, user.photo)
-        ed.putInt(UserFields.ID.field, user.id)
+        ed.putString(UserFields.FIRSTNAME.name, user.firstName)
+        ed.putString(UserFields.LASTNAME.name, user.lastName)
+        ed.putString(UserFields.PHOTO.name, user.photo)
+        ed.putInt(UserFields.ID.name, user.id)
+        ed.putInt(UserFields.VK_ID.name, user.vkId)
         ed.apply()
     }
 
+    override fun getUserInfoFromBase(): User =
+         User(
+             sPref.getInt(UserFields.ID.name, 0),
+             sPref.getInt(UserFields.VK_ID.name, 0),
+             sPref.getString(UserFields.FIRSTNAME.name, "") ?: "",
+             sPref.getString(UserFields.LASTNAME.name, "") ?: "",
+             sPref.getString(UserFields.PHOTO.name, "") ?: "",
+             true
+         )
+
+    override fun saveChatId(chatId: Int) {
+        val ed = sPref.edit()
+        ed.putInt(UserFields.CHAT_ID.name, chatId)
+        ed.apply()
+    }
+
+    override fun getChatId() = sPref.getInt(UserFields.CHAT_ID.name, 1)
 }
