@@ -6,4 +6,7 @@ import io.reactivex.Single
 interface UserRepository {
     fun saveUserInfo(user: User)
     fun getUserInfo(): Single<User>?
+    fun getUserInfoFromBase(): User
+    fun saveChatId(chatId: Int)
+    fun getChatId(): Int
 }

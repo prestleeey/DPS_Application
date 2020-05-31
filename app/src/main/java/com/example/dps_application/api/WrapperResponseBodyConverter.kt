@@ -1,6 +1,5 @@
 package com.example.dps_application.api
 
-import android.util.Log
 import okhttp3.ResponseBody
 import retrofit2.Converter
 

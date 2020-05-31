@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "673533179374",
+    "firebase_url": "https://dps-project-d5180.firebaseio.com",
+    "project_id": "dps-project-d5180",
+    "storage_bucket": "dps-project-d5180.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:673533179374:android:279f4f0c27841db268caff",
+        "android_client_info": {
+          "package_name": "com.example.dps_application"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "673533179374-oogn66o2ueck56aa8j85ditb95t6amc2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_Jdv0Nd513Bt81p5637C3EjO_8qffLvc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "673533179374-oogn66o2ueck56aa8j85ditb95t6amc2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

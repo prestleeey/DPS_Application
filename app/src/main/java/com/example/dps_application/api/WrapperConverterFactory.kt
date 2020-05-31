@@ -1,5 +1,6 @@
 package com.example.dps_application.api
 
+import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Converter
 import retrofit2.Retrofit
@@ -34,5 +35,14 @@ class WrapperConverterFactory(private val factory: GsonConverterFactory) : Conve
 
         val gsonConverter: Converter<ResponseBody, *>? = factory.responseBodyConverter(wrappedType, annotations, retrofit)
         return WrapperResponseBodyConverter(gsonConverter as Converter<ResponseBody, WrapperResponse<Any>>)
+    }
+
+    override fun requestBodyConverter(
+        type: Type,
+        parameterAnnotations: Array<Annotation>,
+        methodAnnotations: Array<Annotation>,
+        retrofit: Retrofit
+    ): Converter<*, RequestBody>? {
+        return factory.requestBodyConverter(type, parameterAnnotations, methodAnnotations, retrofit)
     }
 }

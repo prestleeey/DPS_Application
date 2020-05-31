@@ -39,7 +39,7 @@ class AuthorizationActivity : AppCompatActivity(), AuthorizationHandler, Injecta
         binding.handler = this
 
         authorizationViewModel.getLogInEvent().observe(this, Observer {
-            startActivity(Intent(this, MainActivity::class.java))
+            startMainActivity()
         })
 
         checkAuthorization()
@@ -48,17 +48,22 @@ class AuthorizationActivity : AppCompatActivity(), AuthorizationHandler, Injecta
 
     private fun checkAuthorization() {
         if (VK.isLoggedIn()) {
-            startActivity(Intent(this, MainActivity::class.java))
+            startMainActivity()
         }
     }
 
-    override fun logIn() {
-        VK.login(this, ArrayList())
+    private fun startMainActivity() {
+        val intent = Intent(this, MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
     }
+
+    override fun logIn() = VK.login(this, ArrayList())
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         val callback = object: VKAuthCallback {
             override fun onLogin(token: VKAccessToken) {
+                Log.d("1337", "onLogin: "+token.accessToken)
                 authorizationViewModel.saveUserInfo(token.accessToken)
             }
 

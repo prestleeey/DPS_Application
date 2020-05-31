@@ -3,4 +3,12 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+
+    <color name="colorMessageText">#2B2B2B</color>
+    <color name="colorTimeSendMessage">#EC706A6A</color>
+    <color name="colorMessageSentBackground">#CAD9F0</color>
+    <color name="colorMessageReceiveBackground">#e6e6e6</color>
+    <color name="colorAttachmentBackground">#8C9FBC</color>
+    <color name="colorMessageRecievedBackground">#F7F7F7</color>
+    <color name="colorEditTextChat">#eeeeee</color>
 </resources>
