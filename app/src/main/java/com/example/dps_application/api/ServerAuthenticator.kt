@@ -20,7 +20,7 @@ class ServerAuthenticator
 
         return if(newToken is AccessToken)
              response.request.newBuilder()
-                .header("Authorization", "Bearer " + newToken.accessToken)
+                .header("Authorization", "Bearer " + newToken.refreshToken)
                 .build()
         else
             null

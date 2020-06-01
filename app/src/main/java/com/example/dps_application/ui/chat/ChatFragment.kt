@@ -1,7 +1,6 @@
 package com.example.dps_application.ui.chat
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,21 +9,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
-import androidx.paging.PagedList
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dps_application.R
 import com.example.dps_application.databinding.FragmentChatBinding
 import com.example.dps_application.di.Injectable
-import com.example.dps_application.domain.model.response.MessageResponse
-import com.google.gson.Gson
-import io.socket.client.IO
-import io.socket.client.Manager
-import io.socket.client.Socket
-import io.socket.emitter.Emitter
-import io.socket.engineio.client.Transport
 import kotlinx.android.synthetic.main.fragment_chat.*
-import org.json.JSONObject
 import javax.inject.Inject
+
 
 class ChatFragment : Fragment(), Injectable {
 
@@ -96,9 +87,9 @@ class ChatFragment : Fragment(), Injectable {
             }
         })
 
-        chatViewModel.messages.observe(this, adapter::submitList)
+        chatViewModel.messages.observe(viewLifecycleOwner, adapter::submitList)
 
-        chatViewModel.sendMessageEvent().observe(this) {
+        chatViewModel.sendMessageEvent().observe(viewLifecycleOwner) {
             edit_text_chat_box.setText("")
         }
     }
